@@ -14,27 +14,49 @@ public class PatientDaoImpl extends AbstractDao<PatientEntity, Long> implements 
 
 
     @Override
-    public List<PatientEntity> findByDoctor(String firstName, String lastName) { // TODO - napisac query
-
-        return new ArrayList<>();
-
+    public List<PatientEntity> findByDoctor(String firstName, String lastName) {
+        return entityManager.createQuery(
+                        "SELECT DISTINCT p FROM PatientEntity p " +
+                                "JOIN p.visits v " +
+                                "WHERE v.doctor.firstName = :firstName AND v.doctor.lastName = :lastName",
+                        PatientEntity.class)
+                .setParameter("firstName", firstName)
+                .setParameter("lastName", lastName)
+                .getResultList();
     }
 
     @Override
-    public List<PatientEntity> findPatientsHavingTreatmentType(TreatmentType treatmentType) { // TODO - napisac query
-        return new ArrayList<>();
+    public List<PatientEntity> findPatientsHavingTreatmentType(TreatmentType treatmentType) {
+        return entityManager.createQuery(
+                        "SELECT DISTINCT p FROM PatientEntity p " +
+                                "JOIN p.visits v " +
+                                "JOIN v.medicalTreatments t " +
+                                "WHERE t.type = :treatmentType",
+                        PatientEntity.class)
+                .setParameter("treatmentType", treatmentType)
+                .getResultList();
     }
 
     @Override
-    public List<PatientEntity> findPatientsSharingSameLocationWithDoc(String firstName, String lastName) { // TODO - napisac query
-
-        return new ArrayList<>();
-
+    public List<PatientEntity> findPatientsSharingSameLocationWithDoc(String firstName, String lastName) {
+        return entityManager.createQuery(
+                        "SELECT DISTINCT p FROM PatientEntity p " +
+                                "JOIN p.addresses pa " +
+                                "JOIN DoctorEntity d ON d.firstName = :firstName AND d.lastName = :lastName " +
+                                "JOIN d.addresses da " +
+                                "WHERE pa.id = da.id",
+                        PatientEntity.class)
+                .setParameter("firstName", firstName)
+                .setParameter("lastName", lastName)
+                .getResultList();
     }
 
     @Override
-    public List<PatientEntity> findPatientsWithoutLocation() { // TODO - napisac query
-
-        return null;
+    public List<PatientEntity> findPatientsWithoutLocation() {
+        return entityManager.createQuery(
+                        "SELECT p FROM PatientEntity p " +
+                                "WHERE p.addresses IS EMPTY",
+                        PatientEntity.class)
+                .getResultList();
     }
 }

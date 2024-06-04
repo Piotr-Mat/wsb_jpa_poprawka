@@ -33,7 +33,7 @@ public class PatientEntity {
 	@Column(nullable = false, length = 10)
 	private LocalDate dateOfBirth;
 
-	@OneToMany(mappedBy = "patient", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private Collection<VisitEntity> visits;
 
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)

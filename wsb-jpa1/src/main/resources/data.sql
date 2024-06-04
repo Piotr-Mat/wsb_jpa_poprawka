@@ -21,7 +21,7 @@ insert into patient (id, first_name, last_name, telephone_number, email, date_of
             values (1, 'Zbigniew', 'Kowalski', '3-123456789', 'qYUeh2@example.com', '2021-01-01', '123456788'),
                    (2, 'Krzysio', 'Nowak', '4-123456789', 'Nowak3@example.com', '2021-01-01', '123456789'),
                    (3, 'Kajetan', 'Beton', '5-523456789', 'Beton4@example.com', '2021-01-01', '123456780'),
-                   (4, 'Benek', 'Bobo', '5-223456789', 'qYUeh2@example.com', '2021-01-01', '123456781');
+                   (4, 'Benek', 'Bobo', '5-223456789', 'Benek.Bobo@example.com', '2021-01-01', '123456781');
 
 insert into patient_to_address (patient_id, address_id)
             values (1, 1), (2, 2), (3, 2), (4, 1);

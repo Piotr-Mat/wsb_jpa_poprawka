@@ -56,8 +56,8 @@ public class DoctorDaoTest
     }
 
     @Test
-    public void shouldProveCorrectMappingDoctorToVisit() // TODO naprawic test bez zmiany danych testowych
-    {
+    @Transactional
+    public void shouldProveCorrectMappingDoctorToVisit() {
         // given
 
         // when

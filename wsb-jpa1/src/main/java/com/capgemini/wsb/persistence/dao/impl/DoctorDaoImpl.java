@@ -12,13 +12,30 @@ import java.util.List;
 @Repository
 public class DoctorDaoImpl extends AbstractDao<DoctorEntity, Long> implements DoctorDao {
     @Override
-    public List<DoctorEntity> findBySpecialization(Specialization specialization) { // TODO - napisac query
-
-        return new ArrayList<>();
+    public List<DoctorEntity> findBySpecialization(Specialization specialization) {
+        return entityManager.createQuery("SELECT d FROM DoctorEntity d WHERE d.specialization = :specialization", DoctorEntity.class)
+                .setParameter("specialization", specialization)
+                .getResultList();
     }
 
     @Override
-    public long countNumOfVisitsWithPatient(String docFirstName, String docLastName, String patientFirstName, String patientLastName) { // TODO - napisac query
-        return 1000;
+    public long countNumOfVisitsWithPatient(String docFirstName, String docLastName, String patientFirstName, String patientLastName) {
+        return entityManager.createQuery(
+                        "SELECT COUNT(v) FROM VisitEntity v " +
+                                "WHERE v.doctor.firstName = :docFirstName AND v.doctor.lastName = :docLastName " +
+                                "AND v.patient.firstName = :patientFirstName AND v.patient.lastName = :patientLastName", Long.class)
+                .setParameter("docFirstName", docFirstName)
+                .setParameter("docLastName", docLastName)
+                .setParameter("patientFirstName", patientFirstName)
+                .setParameter("patientLastName", patientLastName)
+                .getSingleResult();
+    }
+
+    @Override
+    public DoctorEntity findOne(Long id) {
+        return entityManager.createQuery(
+                        "SELECT d FROM DoctorEntity d LEFT JOIN FETCH d.visits WHERE d.id = :id", DoctorEntity.class)
+                .setParameter("id", id)
+                .getSingleResult();
     }
 }
